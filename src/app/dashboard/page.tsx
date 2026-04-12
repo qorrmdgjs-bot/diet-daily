@@ -9,25 +9,18 @@ import PredictionCard from '@/components/PredictionCard';
 import { loadWeightData, syncFromSupabase } from '@/utils/storage';
 import { calculateDashboardStats } from '@/utils/dashboard';
 import { calculatePrediction } from '@/utils/prediction';
-import { getInitialTheme, setTheme } from '@/utils/theme';
 
 export default function DashboardPage() {
   const [data, setData] = useState(loadWeightData());
   const [mascotMessage, setMascotMessage] = useState('');
-  const [theme, setCurrentTheme] = useState<'light' | 'dark'>(getInitialTheme());
 
   useEffect(() => {
     syncFromSupabase().then(synced => setData(synced));
   }, []);
 
-  useEffect(() => {
-    setTheme(theme);
-  }, [theme]);
-
   const stats = calculateDashboardStats(data.entries, data.settings.goalWeight, data.settings.height);
   const prediction = calculatePrediction(data.entries, data.settings.goalWeight);
 
-  // 체중 변화 감지 (간단히 최근 2개 비교)
   useEffect(() => {
     if (data.entries.length >= 2) {
       const sorted = data.entries.sort((a, b) => b.date.localeCompare(a.date));
@@ -45,7 +38,6 @@ export default function DashboardPage() {
     }
   }, [data.entries]);
 
-  // 목표 달성 체크
   useEffect(() => {
     const currentWeight = stats.todayEvening ?? stats.todayMorning;
     if (currentWeight && currentWeight <= data.settings.goalWeight) {
@@ -54,10 +46,10 @@ export default function DashboardPage() {
   }, [stats, data.settings.goalWeight]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black py-4 px-2 sm:py-8 sm:px-4">
+    <div className="min-h-screen bg-white py-4 px-2 sm:py-8 sm:px-4">
       <div className="max-w-6xl mx-auto">
         <header className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-pink-700 dark:text-pink-300 mb-4 text-center sm:text-left">Diet Daily 🤴</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-pink-700 mb-4 text-center sm:text-left">Diet Daily 🐶</h1>
           <div className="flex justify-center sm:justify-end space-x-2 sm:space-x-4">
             <Link href="/input" className="px-3 py-2 sm:px-4 sm:py-2 bg-pink-400 text-white rounded-lg hover:bg-pink-500 text-sm sm:text-base">
               홈
@@ -65,12 +57,6 @@ export default function DashboardPage() {
             <Link href="/settings" className="px-3 py-2 sm:px-4 sm:py-2 bg-pink-300 text-white rounded-lg hover:bg-pink-400 text-sm sm:text-base">
               설정
             </Link>
-            <button
-              onClick={() => setCurrentTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="px-3 py-2 sm:px-4 sm:py-2 bg-pink-100 dark:bg-gray-700 rounded-lg text-sm sm:text-base text-pink-600 dark:text-pink-300"
-            >
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
           </div>
         </header>
 

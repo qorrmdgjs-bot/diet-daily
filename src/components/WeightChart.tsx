@@ -46,9 +46,9 @@ export default function WeightChart({ entries, goalWeight }: WeightChartProps) {
   }, [entries, filter, goalWeight]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-md border border-pink-100 dark:border-gray-700">
+    <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md border border-pink-100">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-        <h2 className="text-lg sm:text-xl font-semibold text-pink-700 dark:text-pink-300 mb-2 sm:mb-0">체중 추이</h2>
+        <h2 className="text-lg sm:text-xl font-semibold text-pink-700 mb-2 sm:mb-0">체중 추이</h2>
         <div className="flex flex-wrap gap-1 sm:gap-2">
           {(['7days', '30days', 'all'] as FilterType[]).map((f) => (
             <button
@@ -57,7 +57,7 @@ export default function WeightChart({ entries, goalWeight }: WeightChartProps) {
               className={`px-2 py-1 sm:px-3 sm:py-1 rounded text-xs sm:text-sm ${
                 filter === f
                   ? 'bg-pink-400 text-white'
-                  : 'bg-pink-100 dark:bg-gray-700 text-pink-600 dark:text-gray-300'
+                  : 'bg-pink-100 text-pink-600'
               }`}
             >
               {f === '7days' ? '7일' : f === '30days' ? '30일' : '전체'}
