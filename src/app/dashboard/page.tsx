@@ -47,7 +47,7 @@ export default function DashboardPage() {
         {/* 상단 목표 안내 */}
         {remaining != null && (
           <div className="flex items-center gap-2 mb-4 px-2">
-            <span className="text-2xl">🐰</span>
+            <span className="text-2xl">🦄</span>
             <p className="text-sm text-pink-600 font-medium">
               목표 몸무게까지 <span className="font-bold text-pink-700">{remaining > 0 ? `-${remaining}` : `+${Math.abs(remaining)}`}Kg</span> 남았어요!
             </p>

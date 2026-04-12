@@ -9,7 +9,7 @@ interface DinosaurMascotProps {
 const messages = {
   input: [
     '오늘도 기록했다! 이게 바로 실천이야 💪',
-    '꾸준히 쓰는 너, 진짜 멋져 🐰',
+    '꾸준히 쓰는 너, 진짜 멋져 🦄',
     '기록하는 것만으로도 반은 성공이야!',
     '매일 한 줄이 모여 기적이 돼 ✨',
     '오늘의 나를 기억해줘서 고마워!',
@@ -48,7 +48,7 @@ const messages = {
     '증명했어. 넌 해내는 사람이야!',
   ],
   welcome: [
-    '오늘도 와줬네! 함께 힘내자 🐰',
+    '오늘도 와줬네! 함께 힘내자 🦄',
     '꾸준함이 승리의 열쇠야!',
     '어제의 나보다 오늘의 내가 더 강해!',
     '한 걸음씩이면 충분해. 같이 가자!',
@@ -83,7 +83,7 @@ export default function DinosaurMascot({ message }: DinosaurMascotProps) {
           <div className="absolute top-full right-2 sm:right-4 w-0 h-0 border-l-2 border-r-2 border-t-2 sm:border-l-4 sm:border-r-4 sm:border-t-4 border-transparent border-t-pink-100"></div>
         </div>
       )}
-      <div className="text-4xl sm:text-5xl">🐰</div>
+      <div className="text-4xl sm:text-5xl">🦄</div>
     </div>
   );
 }
