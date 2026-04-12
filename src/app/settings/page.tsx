@@ -25,7 +25,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-pink-50 dark:bg-gray-900 py-4 px-2 sm:py-8 sm:px-4">
+    <div className="min-h-screen bg-white dark:bg-black py-4 px-2 sm:py-8 sm:px-4">
       <div className="max-w-md mx-auto">
         <h1 className="text-2xl sm:text-3xl font-bold text-pink-700 dark:text-pink-300 mb-6 text-center">설정</h1>
 

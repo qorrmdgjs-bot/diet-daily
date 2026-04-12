@@ -7,7 +7,6 @@ import WeightChart from '@/components/WeightChart';
 import Dashboard from '@/components/Dashboard';
 import DinosaurMascot, { messages } from '@/components/DinosaurMascot';
 import PredictionCard from '@/components/PredictionCard';
-import PastDataInput from '@/components/PastDataInput';
 import { loadWeightData, syncFromSupabase } from '@/utils/storage';
 import { calculateDashboardStats } from '@/utils/dashboard';
 import { calculatePrediction } from '@/utils/prediction';
@@ -16,7 +15,6 @@ import { getInitialTheme, setTheme } from '@/utils/theme';
 export default function DashboardPage() {
   const [data, setData] = useState(loadWeightData());
   const [mascotMessage, setMascotMessage] = useState('');
-  const [showPastInput, setShowPastInput] = useState(false);
   const [theme, setCurrentTheme] = useState<'light' | 'dark'>(getInitialTheme());
 
   useEffect(() => {
@@ -67,7 +65,7 @@ export default function DashboardPage() {
   }, [stats, data.settings.goalWeight]);
 
   return (
-    <div className="min-h-screen bg-pink-50 dark:bg-gray-900 py-4 px-2 sm:py-8 sm:px-4">
+    <div className="min-h-screen bg-white dark:bg-black py-4 px-2 sm:py-8 sm:px-4">
       <div className="max-w-6xl mx-auto">
         <header className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-pink-700 dark:text-pink-300 mb-4 text-center sm:text-left">Diet Daily 🦖</h1>
@@ -92,17 +90,11 @@ export default function DashboardPage() {
         <div className="space-y-6 mb-6">
           <div className="flex justify-between items-center">
             <h2 className="text-lg sm:text-xl font-semibold text-pink-700 dark:text-pink-300">체중 입력</h2>
-            <button
-              onClick={() => setShowPastInput(!showPastInput)}
-              className="px-3 py-1 bg-pink-400 text-white rounded text-sm hover:bg-pink-500"
-            >
-              {showPastInput ? '닫기' : '과거 데이터 입력'}
-            </button>
+            <Link href="/past-input" className="px-3 py-1 bg-pink-400 text-white rounded text-sm hover:bg-pink-500">
+              과거 데이터 입력
+            </Link>
           </div>
           <WeightInputForm onSubmit={handleWeightInput} />
-          {showPastInput && (
-            <PastDataInput onSave={handleWeightInput} />
-          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">

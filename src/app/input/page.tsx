@@ -30,7 +30,7 @@ export default function InputPage() {
   };
 
   return (
-    <div className="min-h-screen bg-pink-50 dark:bg-gray-900 py-8 px-4 flex items-center justify-center">
+    <div className="min-h-screen bg-white dark:bg-black py-8 px-4 flex items-center justify-center">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-pink-700 dark:text-pink-300 mb-4">Diet Daily 🦕</h1>

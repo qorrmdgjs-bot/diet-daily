@@ -17,7 +17,7 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-pink-50 dark:bg-gray-900 flex items-center justify-center">
+    <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
       <div className="text-center">
         <div className="text-6xl mb-4">🦕</div>
         <p className="text-pink-400 dark:text-pink-300">로딩 중...</p>
