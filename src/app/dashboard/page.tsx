@@ -7,6 +7,7 @@ import WeightChart from '@/components/WeightChart';
 import Dashboard from '@/components/Dashboard';
 import DinosaurMascot, { messages } from '@/components/DinosaurMascot';
 import PredictionCard from '@/components/PredictionCard';
+import PastDataInput from '@/components/PastDataInput';
 import { loadWeightData } from '@/utils/storage';
 import { calculateDashboardStats } from '@/utils/dashboard';
 import { calculatePrediction } from '@/utils/prediction';
@@ -107,11 +108,7 @@ export default function DashboardPage() {
           </div>
           <WeightInputForm onSubmit={handleWeightInput} />
           {showPastInput && (
-            <div className="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-2">
-                💡 과거 데이터를 입력하려면 위 폼에서 날짜를 선택하세요.
-              </p>
-            </div>
+            <PastDataInput onSave={handleWeightInput} />
           )}
         </div>
 
