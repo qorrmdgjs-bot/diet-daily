@@ -8,10 +8,9 @@ import Dashboard from '@/components/Dashboard';
 import DinosaurMascot, { messages } from '@/components/DinosaurMascot';
 import PredictionCard from '@/components/PredictionCard';
 import PastDataInput from '@/components/PastDataInput';
-import { loadWeightData } from '@/utils/storage';
+import { loadWeightData, syncFromSupabase } from '@/utils/storage';
 import { calculateDashboardStats } from '@/utils/dashboard';
 import { calculatePrediction } from '@/utils/prediction';
-import { exportToCSV } from '@/utils/exportCSV';
 import { getInitialTheme, setTheme } from '@/utils/theme';
 
 export default function DashboardPage() {
@@ -21,7 +20,7 @@ export default function DashboardPage() {
   const [theme, setCurrentTheme] = useState<'light' | 'dark'>(getInitialTheme());
 
   useEffect(() => {
-    setData(loadWeightData());
+    syncFromSupabase().then(synced => setData(synced));
   }, []);
 
   useEffect(() => {
@@ -68,28 +67,22 @@ export default function DashboardPage() {
   }, [stats, data.settings.goalWeight]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-4 px-2 sm:py-8 sm:px-4">
+    <div className="min-h-screen bg-pink-50 dark:bg-gray-900 py-4 px-2 sm:py-8 sm:px-4">
       <div className="max-w-6xl mx-auto">
         <header className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4 text-center sm:text-left">Diet Daily 🦖</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-pink-700 dark:text-pink-300 mb-4 text-center sm:text-left">Diet Daily 🦖</h1>
           <div className="flex justify-center sm:justify-end space-x-2 sm:space-x-4">
-            <Link href="/" className="px-3 py-2 sm:px-4 sm:py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 text-sm sm:text-base">
+            <Link href="/input" className="px-3 py-2 sm:px-4 sm:py-2 bg-pink-400 text-white rounded-lg hover:bg-pink-500 text-sm sm:text-base">
               홈
             </Link>
-            <Link href="/settings" className="px-3 py-2 sm:px-4 sm:py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm sm:text-base">
+            <Link href="/settings" className="px-3 py-2 sm:px-4 sm:py-2 bg-pink-300 text-white rounded-lg hover:bg-pink-400 text-sm sm:text-base">
               설정
             </Link>
             <button
               onClick={() => setCurrentTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm sm:text-base"
+              className="px-3 py-2 sm:px-4 sm:py-2 bg-pink-100 dark:bg-gray-700 rounded-lg text-sm sm:text-base text-pink-600 dark:text-pink-300"
             >
               {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-            <button
-              onClick={() => exportToCSV(data.entries)}
-              className="px-3 py-2 sm:px-4 sm:py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm sm:text-base"
-            >
-              CSV
             </button>
           </div>
         </header>
@@ -98,10 +91,10 @@ export default function DashboardPage() {
 
         <div className="space-y-6 mb-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">체중 입력</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-pink-700 dark:text-pink-300">체중 입력</h2>
             <button
               onClick={() => setShowPastInput(!showPastInput)}
-              className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+              className="px-3 py-1 bg-pink-400 text-white rounded text-sm hover:bg-pink-500"
             >
               {showPastInput ? '닫기' : '과거 데이터 입력'}
             </button>

@@ -54,10 +54,10 @@ export default function DinosaurMascot({ message }: DinosaurMascotProps) {
     <div className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 z-50">
       {currentMessage && (
         <div className="relative mb-1 sm:mb-2">
-          <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg shadow-lg max-w-[200px] sm:max-w-xs text-sm sm:text-base">
+          <div className="bg-pink-100 dark:bg-gray-800 text-pink-700 dark:text-pink-300 px-3 py-2 sm:px-4 sm:py-2 rounded-xl shadow-lg max-w-[200px] sm:max-w-xs text-sm sm:text-base border border-pink-200 dark:border-gray-700">
             {currentMessage}
           </div>
-          <div className="absolute top-full right-2 sm:right-4 w-0 h-0 border-l-2 border-r-2 border-t-2 sm:border-l-4 sm:border-r-4 sm:border-t-4 border-transparent border-t-white dark:border-t-gray-800"></div>
+          <div className="absolute top-full right-2 sm:right-4 w-0 h-0 border-l-2 border-r-2 border-t-2 sm:border-l-4 sm:border-r-4 sm:border-t-4 border-transparent border-t-pink-100 dark:border-t-gray-800"></div>
         </div>
       )}
       <div className="text-4xl sm:text-5xl">🦖</div>

@@ -46,9 +46,9 @@ export default function WeightChart({ entries, goalWeight }: WeightChartProps) {
   }, [entries, filter, goalWeight]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 shadow-md">
+    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-md border border-pink-100 dark:border-gray-700">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-        <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2 sm:mb-0">체중 추이</h2>
+        <h2 className="text-lg sm:text-xl font-semibold text-pink-700 dark:text-pink-300 mb-2 sm:mb-0">체중 추이</h2>
         <div className="flex flex-wrap gap-1 sm:gap-2">
           {(['7days', '30days', 'all'] as FilterType[]).map((f) => (
             <button
@@ -56,8 +56,8 @@ export default function WeightChart({ entries, goalWeight }: WeightChartProps) {
               onClick={() => setFilter(f)}
               className={`px-2 py-1 sm:px-3 sm:py-1 rounded text-xs sm:text-sm ${
                 filter === f
-                  ? 'bg-green-500 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                  ? 'bg-pink-400 text-white'
+                  : 'bg-pink-100 dark:bg-gray-700 text-pink-600 dark:text-gray-300'
               }`}
             >
               {f === '7days' ? '7일' : f === '30days' ? '30일' : '전체'}
@@ -67,15 +67,15 @@ export default function WeightChart({ entries, goalWeight }: WeightChartProps) {
       </div>
       <ResponsiveContainer width="100%" height={250} className="sm:h-[300px]">
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#fce4ec" />
           <XAxis dataKey="date" fontSize={12} />
           <YAxis fontSize={12} />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="morning" stroke="#8884d8" name="아침" strokeWidth={2} />
-          <Line type="monotone" dataKey="evening" stroke="#82ca9d" name="저녁" strokeWidth={2} />
-          <Line type="monotone" dataKey="goal" stroke="#ff7300" strokeDasharray="5 5" name="목표" strokeWidth={2} />
-          <Line type="monotone" dataKey="movingAverage" stroke="#ff0000" name="7일 평균" strokeWidth={2} />
+          <Line type="monotone" dataKey="morning" stroke="#f472b6" name="아침" strokeWidth={2} />
+          <Line type="monotone" dataKey="evening" stroke="#c084fc" name="저녁" strokeWidth={2} />
+          <Line type="monotone" dataKey="goal" stroke="#fb923c" strokeDasharray="5 5" name="목표" strokeWidth={2} />
+          <Line type="monotone" dataKey="movingAverage" stroke="#f43f5e" name="7일 평균" strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
     </div>

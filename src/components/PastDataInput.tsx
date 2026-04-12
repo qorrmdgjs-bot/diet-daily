@@ -95,26 +95,26 @@ export default function PastDataInput({ onSave }: PastDataInputProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-6 border border-pink-100 dark:border-gray-700">
       {/* 월 네비게이션 */}
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={handlePrevMonth}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+          className="p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-gray-700 text-pink-500 dark:text-pink-300"
         >
           ◀
         </button>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{monthLabel}</h3>
+        <h3 className="text-lg font-bold text-pink-700 dark:text-pink-300">{monthLabel}</h3>
         <button
           onClick={handleNextMonth}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+          className="p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-gray-700 text-pink-500 dark:text-pink-300"
         >
           ▶
         </button>
       </div>
 
       {/* 테이블 헤더 */}
-      <div className="grid grid-cols-[60px_1fr_1fr] gap-1 mb-2 text-center text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
+      <div className="grid grid-cols-[60px_1fr_1fr] gap-1 mb-2 text-center text-xs sm:text-sm font-semibold text-pink-500 dark:text-pink-300">
         <div>날짜</div>
         <div>아침 (kg)</div>
         <div>저녁 (kg)</div>
@@ -126,11 +126,11 @@ export default function PastDataInput({ onSave }: PastDataInputProps) {
           <div
             key={day}
             className={`grid grid-cols-[60px_1fr_1fr] gap-1 items-center ${
-              isWeekend(day) ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+              isWeekend(day) ? 'bg-pink-50 dark:bg-pink-900/20' : ''
             } rounded px-1 py-0.5`}
           >
             <div className={`text-xs sm:text-sm font-medium text-center ${
-              isWeekend(day) ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+              isWeekend(day) ? 'text-rose-400 dark:text-rose-300' : 'text-pink-600 dark:text-pink-300'
             }`}>
               {day}일 {getDayOfWeek(day)}
             </div>
@@ -142,7 +142,7 @@ export default function PastDataInput({ onSave }: PastDataInputProps) {
               placeholder="-"
               value={days[day]?.morning ?? ''}
               onChange={e => handleChange(day, 'morning', e.target.value)}
-              className="w-full px-2 py-1.5 text-sm text-center border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="w-full px-2 py-1.5 text-sm text-center border border-pink-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-pink-700 dark:text-white focus:ring-2 focus:ring-pink-300 focus:outline-none"
             />
             <input
               type="number"
@@ -152,7 +152,7 @@ export default function PastDataInput({ onSave }: PastDataInputProps) {
               placeholder="-"
               value={days[day]?.evening ?? ''}
               onChange={e => handleChange(day, 'evening', e.target.value)}
-              className="w-full px-2 py-1.5 text-sm text-center border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="w-full px-2 py-1.5 text-sm text-center border border-pink-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-pink-700 dark:text-white focus:ring-2 focus:ring-pink-300 focus:outline-none"
             />
           </div>
         ))}
@@ -161,11 +161,11 @@ export default function PastDataInput({ onSave }: PastDataInputProps) {
       {/* 저장 버튼 */}
       <div className="mt-4 flex items-center justify-end gap-3">
         {saved && (
-          <span className="text-sm text-green-600 dark:text-green-400">저장 완료!</span>
+          <span className="text-sm text-emerald-500 dark:text-emerald-400">저장 완료!</span>
         )}
         <button
           onClick={handleSave}
-          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-medium text-sm"
+          className="px-6 py-2 bg-pink-400 text-white rounded-lg hover:bg-pink-500 font-medium text-sm"
         >
           저장
         </button>
