@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Gamja_Flower } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const gamjaFlower = Gamja_Flower({
+  weight: "400",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-handwriting",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +21,9 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${gamjaFlower.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white">
+      <body className="min-h-full flex flex-col bg-white font-handwriting">
         {children}
       </body>
     </html>
