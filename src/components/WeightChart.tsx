@@ -11,13 +11,15 @@ interface WeightChartProps {
   entries: WeightEntry[];
 }
 
-type FilterType = '1week' | '2weeks' | '3weeks' | '1month';
+type FilterType = '1week' | '2weeks' | '3weeks' | '1month' | '3months' | 'all';
 
 const FILTER_LABELS: Record<FilterType, string> = {
   '1week': '1주일',
   '2weeks': '2주',
   '3weeks': '3주',
   '1month': '1개월',
+  '3months': '3개월',
+  'all': '전체',
 };
 
 const FILTER_DAYS: Record<FilterType, number> = {
@@ -25,15 +27,20 @@ const FILTER_DAYS: Record<FilterType, number> = {
   '2weeks': 14,
   '3weeks': 21,
   '1month': 31,
+  '3months': 90,
+  'all': 0,
 };
+
+const SHOW_LABELS: Set<FilterType> = new Set(['1week', '2weeks', '3weeks', '1month']);
 
 export default function WeightChart({ entries }: WeightChartProps) {
   const [filter, setFilter] = useState<FilterType>('1week');
 
   const chartData = useMemo(() => {
-    const cutoff = subDays(new Date(), FILTER_DAYS[filter]);
-
-    const filtered = entries.filter(e => parseDate(e.date) >= cutoff);
+    const daysBack = FILTER_DAYS[filter];
+    const filtered = daysBack === 0
+      ? entries
+      : entries.filter(e => parseDate(e.date) >= subDays(new Date(), daysBack));
     if (filtered.length === 0) return [];
 
     return filtered.map(entry => ({
@@ -131,7 +138,7 @@ export default function WeightChart({ entries }: WeightChartProps) {
               dataKey="evening"
               stroke="#93c5fd"
               strokeWidth={2}
-              dot={{ r: 4, fill: '#93c5fd', stroke: '#93c5fd' }}
+              dot={SHOW_LABELS.has(filter) ? { r: 4, fill: '#93c5fd', stroke: '#93c5fd' } : { r: 1.5, fill: '#93c5fd', stroke: '#93c5fd' }}
               connectNulls
             />
 
@@ -141,12 +148,12 @@ export default function WeightChart({ entries }: WeightChartProps) {
               dataKey="morning"
               stroke="#fca5a5"
               strokeWidth={2}
-              dot={{ r: 4, fill: '#fca5a5', stroke: '#fca5a5' }}
+              dot={SHOW_LABELS.has(filter) ? { r: 4, fill: '#fca5a5', stroke: '#fca5a5' } : { r: 1.5, fill: '#fca5a5', stroke: '#fca5a5' }}
               connectNulls
             />
 
-            {/* 데이터 포인트 위에 숫자 표시 */}
-            {chartData.map((d, i) => (
+            {/* 데이터 포인트 위에 숫자 표시 (단기 필터만) */}
+            {SHOW_LABELS.has(filter) && chartData.map((d, i) => (
               d.morning != null && (
                 <ReferenceDot
                   key={`m-${i}`}
@@ -157,7 +164,7 @@ export default function WeightChart({ entries }: WeightChartProps) {
                 />
               )
             ))}
-            {chartData.map((d, i) => (
+            {SHOW_LABELS.has(filter) && chartData.map((d, i) => (
               d.evening != null && (
                 <ReferenceDot
                   key={`e-${i}`}
