@@ -11,6 +11,10 @@
   --font-handwriting: var(--font-handwriting);
 }
 
+html {
+  font-size: 18px;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
