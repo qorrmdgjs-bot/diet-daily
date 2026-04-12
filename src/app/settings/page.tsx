@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { loadWeightData, updateSettings } from '@/utils/storage';
+import { exportToCSV } from '@/utils/exportCSV';
 
 export default function SettingsPage() {
   const [goalWeight, setGoalWeight] = useState('');
@@ -76,6 +77,20 @@ export default function SettingsPage() {
             </button>
           </div>
         </form>
+
+        <div className="mt-6 bg-white rounded-xl p-4 sm:p-6 shadow-md border border-pink-100">
+          <h2 className="text-sm font-medium text-pink-600 mb-3">데이터 내보내기</h2>
+          <button
+            type="button"
+            onClick={() => {
+              const data = loadWeightData();
+              exportToCSV(data.entries);
+            }}
+            className="w-full bg-pink-400 text-white py-2 px-4 rounded-md hover:bg-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm sm:text-base"
+          >
+            엑셀(CSV) 다운로드
+          </button>
+        </div>
       </div>
     </div>
   );
