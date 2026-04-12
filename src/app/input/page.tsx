@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { addWeightEntry, updateSettings } from '@/utils/storage';
+import Link from 'next/link';
+import { addWeightEntry, updateSettings, loadWeightData } from '@/utils/storage';
 import { getToday } from '@/utils/dates';
 import { WeightEntry } from '@/types';
 
@@ -12,7 +13,15 @@ export default function InputPage() {
   const [evening, setEvening] = useState('');
   const [goalWeight, setGoalWeight] = useState('');
   const [height, setHeight] = useState('');
+  const [hasData, setHasData] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const data = loadWeightData();
+    if (data.settings.goalWeight) setGoalWeight(data.settings.goalWeight.toString());
+    if (data.settings.height) setHeight(data.settings.height.toString());
+    setHasData(data.entries.length > 0);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,14 +42,14 @@ export default function InputPage() {
     <div className="min-h-screen bg-white dark:bg-black py-8 px-4 flex items-center justify-center">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-pink-700 dark:text-pink-300 mb-4">Diet Daily 🦕</h1>
-          <p className="text-pink-400 dark:text-pink-300">체중 관리를 시작해보세요!</p>
+          <h1 className="text-3xl font-bold text-pink-700 dark:text-pink-300 mb-4">Diet Daily 🤴</h1>
+          <p className="text-pink-400 dark:text-pink-300">오늘의 체중을 입력해주세요!</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md space-y-4 border border-pink-100 dark:border-gray-700">
           <div>
             <label className="block text-sm font-medium text-pink-600 dark:text-pink-300 mb-2">
-              오늘 날짜
+              날짜
             </label>
             <input
               type="date"
@@ -114,9 +123,20 @@ export default function InputPage() {
             type="submit"
             className="w-full bg-pink-400 text-white py-3 px-4 rounded-md hover:bg-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-400 text-lg font-semibold"
           >
-            시작하기
+            저장하고 분석 보기
           </button>
         </form>
+
+        {hasData && (
+          <div className="mt-4 flex justify-center gap-3">
+            <Link href="/dashboard" className="px-4 py-2 bg-pink-100 dark:bg-gray-700 text-pink-600 dark:text-pink-300 rounded-lg hover:bg-pink-200 dark:hover:bg-gray-600 text-sm">
+              분석 보기
+            </Link>
+            <Link href="/past-input" className="px-4 py-2 bg-pink-100 dark:bg-gray-700 text-pink-600 dark:text-pink-300 rounded-lg hover:bg-pink-200 dark:hover:bg-gray-600 text-sm">
+              과거 데이터 입력
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

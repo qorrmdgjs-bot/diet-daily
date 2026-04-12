@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
       <div className="text-center">
-        <div className="text-6xl mb-4">🦕</div>
+        <div className="text-6xl mb-4">🤴</div>
         <p className="text-pink-400 dark:text-pink-300">로딩 중...</p>
       </div>
     </div>

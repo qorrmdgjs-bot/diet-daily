@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import WeightInputForm from '@/components/WeightInputForm';
 import WeightChart from '@/components/WeightChart';
 import Dashboard from '@/components/Dashboard';
 import DinosaurMascot, { messages } from '@/components/DinosaurMascot';
@@ -24,16 +23,6 @@ export default function DashboardPage() {
   useEffect(() => {
     setTheme(theme);
   }, [theme]);
-
-  const refreshData = () => {
-    setData(loadWeightData());
-  };
-
-  const handleWeightInput = () => {
-    refreshData();
-    const randomMessage = messages.input[Math.floor(Math.random() * messages.input.length)];
-    setMascotMessage(randomMessage);
-  };
 
   const stats = calculateDashboardStats(data.entries, data.settings.goalWeight, data.settings.height);
   const prediction = calculatePrediction(data.entries, data.settings.goalWeight);
@@ -68,7 +57,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-white dark:bg-black py-4 px-2 sm:py-8 sm:px-4">
       <div className="max-w-6xl mx-auto">
         <header className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-pink-700 dark:text-pink-300 mb-4 text-center sm:text-left">Diet Daily 🦖</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-pink-700 dark:text-pink-300 mb-4 text-center sm:text-left">Diet Daily 🤴</h1>
           <div className="flex justify-center sm:justify-end space-x-2 sm:space-x-4">
             <Link href="/input" className="px-3 py-2 sm:px-4 sm:py-2 bg-pink-400 text-white rounded-lg hover:bg-pink-500 text-sm sm:text-base">
               홈
@@ -86,16 +75,6 @@ export default function DashboardPage() {
         </header>
 
         <Dashboard stats={stats} />
-
-        <div className="space-y-6 mb-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg sm:text-xl font-semibold text-pink-700 dark:text-pink-300">체중 입력</h2>
-            <Link href="/past-input" className="px-3 py-1 bg-pink-400 text-white rounded text-sm hover:bg-pink-500">
-              과거 데이터 입력
-            </Link>
-          </div>
-          <WeightInputForm onSubmit={handleWeightInput} />
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <PredictionCard prediction={prediction} />
