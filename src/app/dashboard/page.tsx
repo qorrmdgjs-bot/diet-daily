@@ -65,6 +65,9 @@ export default function DashboardPage() {
           <Link href="/graph" className="text-center px-4 py-3 bg-pink-400 text-white rounded-xl hover:bg-pink-500 font-medium text-sm">
             그래프
           </Link>
+          <Link href="/analysis" className="col-span-2 text-center px-4 py-3 bg-pink-500 text-white rounded-xl hover:bg-pink-600 font-medium text-sm">
+            AI 건강 분석 🦄
+          </Link>
           <Link href="/past-input" className="text-center px-4 py-3 bg-pink-100 text-pink-600 rounded-xl hover:bg-pink-200 font-medium text-sm">
             과거 데이터
           </Link>
