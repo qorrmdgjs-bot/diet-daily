@@ -44,7 +44,6 @@ export default function MonthlyCalendar({ entries }: MonthlyCalendarProps) {
     const mornings: number[] = [];
     const evenings: number[] = [];
     for (const d of weekDays) {
-      if (!isSameMonth(d, currentMonth)) continue;
       const entry = entryMap.get(format(d, 'yyyy-MM-dd'));
       if (entry?.morning != null) mornings.push(entry.morning);
       if (entry?.evening != null) evenings.push(entry.evening);
@@ -111,7 +110,7 @@ export default function MonthlyCalendar({ entries }: MonthlyCalendarProps) {
                   <div
                     key={dateStr}
                     className={`bg-white p-1 sm:p-1.5 min-h-[60px] sm:min-h-[75px] ${
-                      !inMonth ? 'opacity-30' : ''
+                      !inMonth ? 'bg-gray-50' : ''
                     }`}
                   >
                     <div className="flex justify-center mb-0.5">
@@ -119,18 +118,20 @@ export default function MonthlyCalendar({ entries }: MonthlyCalendarProps) {
                         className={`text-xs sm:text-sm font-medium w-6 h-6 flex items-center justify-center rounded-full ${
                           today
                             ? 'bg-pink-500 text-white'
-                            : dayOfWeek === 0
-                              ? 'text-rose-400'
-                              : dayOfWeek === 6
-                                ? 'text-blue-400'
-                                : 'text-gray-700'
+                            : !inMonth
+                              ? 'text-gray-300'
+                              : dayOfWeek === 0
+                                ? 'text-rose-400'
+                                : dayOfWeek === 6
+                                  ? 'text-blue-400'
+                                  : 'text-gray-700'
                         }`}
                       >
                         {format(d, 'd')}
                       </span>
                     </div>
 
-                    {inMonth && entry && (
+                    {entry && (
                       <div className="text-center space-y-0">
                         {entry.morning != null && (
                           <p className="text-[10px] sm:text-xs text-pink-500 leading-tight">
