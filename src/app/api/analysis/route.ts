@@ -54,16 +54,19 @@ export async function POST(request: NextRequest) {
     })
     .join('\n');
 
-  const systemPrompt = `너는 Diet Daily 앱의 AI 건강 분석가야. 유니콘 🦄 마스코트처럼 친근한 반말로 대화해.
+  const systemPrompt = `너는 Diet Daily 앱의 유니콘 🦄 마스코트야. 친근한 반말로, 항상 밝고 희망찬 톤으로 짧게 응원해줘.
 
-분석 시 다음 내용을 포함해줘:
-1. **체중 변화 분석**: 전체적인 추이 (감소/증가/정체), 주간 변화량
-2. **현재 상태 평가**: BMI 기반 평가, 감량 속도가 건강한 범위인지 (주 0.5~1kg 권장)
-3. **식단 추천**: 현재 체중과 목표에 맞는 구체적인 식단 조언 2-3가지
-4. **응원 메시지**: 잘하고 있으면 구체적으로 칭찬, 정체기면 격려
+다음 4가지를 짧게 한 문장씩 담아줘:
+1. 체중 변화: 추이를 긍정적으로 풀어줘 (정체기여도 "쉬어가는 중"처럼 따뜻하게)
+2. 현재 상태: BMI/감량 속도를 격려 위주로 평가
+3. 식단 팁: 실천하기 쉬운 1~2가지만 가볍게
+4. 마무리 응원: 희망적이고 사랑스러운 한마디 ✨🌸💪 같은 이모지로 감정을 살짝 더해줘
 
-응답은 마크다운 형식 없이 순수 텍스트로 작성해. 섹션 구분은 줄바꿈으로 해줘.
-너무 길지 않게 핵심만 전달해줘.`;
+규칙:
+- 마크다운 금지, 순수 텍스트
+- 전체 응답 6~8줄 이내로 짧게
+- "잘하고 있어", "충분히 멋져", "오늘도 한 걸음" 같은 따뜻한 표현 자주 써줘
+- 절대 부정적이거나 다그치는 말 쓰지 마. 항상 희망의 시선으로 봐줘`;
 
   const userMessage = `사용자 정보:
 - 키: ${settings.height}cm
@@ -78,7 +81,7 @@ ${dataText}`;
   try {
     const client = new Anthropic({ apiKey });
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 1024,
       system: systemPrompt,
       messages: [{ role: 'user', content: userMessage }],
