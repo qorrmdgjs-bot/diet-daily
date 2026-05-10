@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isToday } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { WeightEntry } from '@/types';
+import { MOOD_EMOJI } from '@/constants/mood';
 
 interface MonthlyCalendarProps {
   entries: WeightEntry[];
@@ -109,10 +110,15 @@ export default function MonthlyCalendar({ entries }: MonthlyCalendarProps) {
                 return (
                   <div
                     key={dateStr}
-                    className={`bg-white p-1 sm:p-1.5 min-h-[60px] sm:min-h-[75px] ${
+                    className={`relative bg-white p-1 sm:p-1.5 min-h-[60px] sm:min-h-[75px] ${
                       !inMonth ? 'bg-gray-50' : ''
                     }`}
                   >
+                    {entry?.mood && (
+                      <span className="absolute top-0.5 right-0.5 text-[10px] sm:text-xs leading-none">
+                        {MOOD_EMOJI[entry.mood]}
+                      </span>
+                    )}
                     <div className="flex justify-center mb-0.5">
                       <span
                         className={`text-xs sm:text-sm font-medium w-6 h-6 flex items-center justify-center rounded-full ${

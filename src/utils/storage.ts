@@ -1,4 +1,4 @@
-import { WeightData, WeightEntry, UserSettings } from '@/types';
+import { WeightData, WeightEntry, UserSettings, MoodKey } from '@/types';
 import { supabase } from '@/lib/supabase';
 
 const STORAGE_KEY = 'diet-daily-data';
@@ -68,6 +68,8 @@ async function syncEntryToSupabase(entry: WeightEntry) {
           date: entry.date,
           morning: entry.morning,
           evening: entry.evening,
+          mood: entry.mood ?? null,
+          note: entry.note ?? null,
           updated_at: new Date().toISOString(),
         },
         { onConflict: 'date' }
@@ -106,6 +108,8 @@ export async function loadFromSupabase(): Promise<WeightData | null> {
       date: row.date as string,
       morning: row.morning != null ? Number(row.morning) : null,
       evening: row.evening != null ? Number(row.evening) : null,
+      mood: (row.mood as MoodKey | null) ?? null,
+      note: (row.note as string | null) ?? null,
     }));
 
     const settings: UserSettings = {

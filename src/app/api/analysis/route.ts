@@ -5,7 +5,17 @@ interface WeightEntry {
   date: string;
   morning: number | null;
   evening: number | null;
+  mood?: 'great' | 'good' | 'soso' | 'tired' | 'sad' | null;
+  note?: string | null;
 }
+
+const MOOD_LABEL_KO: Record<NonNullable<WeightEntry['mood']>, string> = {
+  great: '좋음🥰',
+  good: '괜찮음😊',
+  soso: '그냥😐',
+  tired: '피곤😴',
+  sad: '울적😢',
+};
 
 interface UserSettings {
   goalWeight: number;
@@ -50,9 +60,13 @@ export async function POST(request: NextRequest) {
       const parts = [e.date];
       if (e.morning != null) parts.push(`아침:${e.morning}kg`);
       if (e.evening != null) parts.push(`저녁:${e.evening}kg`);
+      if (e.mood) parts.push(`기분:${MOOD_LABEL_KO[e.mood]}`);
+      if (e.note) parts.push(`메모:${e.note}`);
       return parts.join(' ');
     })
     .join('\n');
+
+  const moodCount = recentEntries.filter(e => e.mood).length;
 
   const systemPrompt = `너는 Diet Daily 앱의 유니콘 🦄 마스코트야. 친근한 반말로, 항상 밝고 희망찬 톤으로 짧게 응원해줘.
 
@@ -68,13 +82,14 @@ export async function POST(request: NextRequest) {
 (실천하기 쉬운 1~2가지. 단, 야식·간식 자제 같은 조언은 절대 하지 마 — 사용자는 이미 야식을 안 먹어. 대신 아침/점심/저녁 식사 구성, 수분, 단백질, 야채 비율, 식사 속도 같은 방향에서 조언해줘.)
 
 💪 마무리 응원
-(사랑스럽고 희망찬 한마디. 이모지 자유롭게.)
+(사랑스럽고 희망찬 한마디. 이모지 자유롭게.${moodCount > 0 ? ' 기분 기록이 있다면 그날의 컨디션도 따뜻하게 짚어줘 — 예: "피곤한 날에도 챙겨줘서 고마워".' : ''})
 
 규칙:
 - 섹션 사이는 반드시 빈 줄로 구분 (\\n\\n)
 - 섹션 제목은 위 이모지 + 짧은 라벨 그대로 사용
 - 마크다운 굵게/기울임/리스트 기호 사용 금지 — 순수 텍스트
-- 절대 부정적이거나 다그치는 말 쓰지 마. 항상 희망의 시선으로`;
+- 절대 부정적이거나 다그치는 말 쓰지 마. 항상 희망의 시선으로${moodCount > 0 ? `
+- 사용자의 기분 기록(${moodCount}일치)이 보이면 체중 변화와 자연스럽게 엮어서 따뜻하게 언급해줘. 다만 기분이 안 좋다고 다그치지 말고 위로/공감 위주로.` : ''}`;
 
   const userMessage = `사용자 정보:
 - 키: ${settings.height}cm
