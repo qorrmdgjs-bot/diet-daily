@@ -4,15 +4,34 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import MonthlyCalendar from '@/components/MonthlyCalendar';
 import DinosaurMascot, { messages } from '@/components/DinosaurMascot';
+import BadgeCelebration from '@/components/BadgeCelebration';
 import { loadWeightData, syncFromSupabase } from '@/utils/storage';
+import { computeEarnedBadges, computeStreak, loadSeenBadges, markBadgesSeen, BadgeId } from '@/utils/badges';
 
 export default function DashboardPage() {
   const [data, setData] = useState(loadWeightData());
   const [mascotMessage, setMascotMessage] = useState('');
+  const [pendingBadge, setPendingBadge] = useState<BadgeId | null>(null);
 
   useEffect(() => {
     syncFromSupabase().then(synced => setData(synced));
   }, []);
+
+  // 새로 달성한 뱃지가 있으면 첫 번째 것을 모달로 표시
+  useEffect(() => {
+    if (data.entries.length === 0) return;
+    const earned = computeEarnedBadges(data.entries, data.settings);
+    const seen = new Set(loadSeenBadges());
+    const fresh = earned.filter(id => !seen.has(id));
+    if (fresh.length > 0) setPendingBadge(fresh[0]);
+  }, [data]);
+
+  const closePendingBadge = () => {
+    if (pendingBadge) markBadgesSeen([pendingBadge]);
+    setPendingBadge(null);
+  };
+
+  const streak = computeStreak(data.entries);
 
   // 목표까지 남은 kg 계산
   const latestEntry = data.entries.length > 0
@@ -76,8 +95,9 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        <DinosaurMascot message={mascotMessage} />
+        <DinosaurMascot message={mascotMessage} streak={streak} />
       </div>
+      {pendingBadge && <BadgeCelebration badge={pendingBadge} onClose={closePendingBadge} />}
     </div>
   );
 }

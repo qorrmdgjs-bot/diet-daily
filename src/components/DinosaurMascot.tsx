@@ -4,6 +4,14 @@ import { useState, useEffect } from 'react';
 
 interface DinosaurMascotProps {
   message?: string;
+  streak?: number;
+}
+
+function mascotEmoji(streak: number): string {
+  if (streak >= 100) return '🌟🦄👑';
+  if (streak >= 30) return '🦄👑';
+  if (streak >= 7) return '🦄✨';
+  return '🦄';
 }
 
 const messages = {
@@ -57,7 +65,7 @@ const messages = {
   ],
 };
 
-export default function DinosaurMascot({ message }: DinosaurMascotProps) {
+export default function DinosaurMascot({ message, streak = 0 }: DinosaurMascotProps) {
   const [currentMessage, setCurrentMessage] = useState('');
 
   useEffect(() => {
@@ -83,7 +91,7 @@ export default function DinosaurMascot({ message }: DinosaurMascotProps) {
           <div className="absolute top-full right-2 sm:right-4 w-0 h-0 border-l-2 border-r-2 border-t-2 sm:border-l-4 sm:border-r-4 sm:border-t-4 border-transparent border-t-pink-100"></div>
         </div>
       )}
-      <div className="text-4xl sm:text-5xl">🦄</div>
+      <div className="text-4xl sm:text-5xl whitespace-nowrap">{mascotEmoji(streak)}</div>
     </div>
   );
 }

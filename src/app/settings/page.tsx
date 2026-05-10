@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { loadWeightData, updateSettings } from '@/utils/storage';
 import { exportToCSV } from '@/utils/exportCSV';
 
@@ -77,6 +78,19 @@ export default function SettingsPage() {
             </button>
           </div>
         </form>
+
+        <Link
+          href="/badges"
+          className="mt-6 block bg-white rounded-xl p-4 sm:p-6 shadow-md border border-pink-100 hover:bg-pink-50"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-pink-700">뱃지 컬렉션 🏅</p>
+              <p className="text-xs text-pink-400 mt-0.5">너와 유니콘이 모은 뱃지를 한눈에</p>
+            </div>
+            <span className="text-pink-400">›</span>
+          </div>
+        </Link>
 
         <div className="mt-6 bg-white rounded-xl p-4 sm:p-6 shadow-md border border-pink-100">
           <h2 className="text-sm font-medium text-pink-600 mb-3">데이터 내보내기</h2>
