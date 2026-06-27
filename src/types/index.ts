@@ -33,3 +33,20 @@ export interface DashboardStats {
   bmi: number | null;
   dailyVariation: number | null;
 }
+
+// --- Well-Sleep (수면 관리) ---
+
+export interface SleepEntry {
+  date: string; // YYYY-MM-DD
+  hours: number | null;
+  note?: string | null;
+}
+
+export interface SleepSettings {
+  goalHours: number; // 목표 수면시간 (시간)
+}
+
+export interface SleepData {
+  entries: SleepEntry[];
+  settings: SleepSettings;
+}

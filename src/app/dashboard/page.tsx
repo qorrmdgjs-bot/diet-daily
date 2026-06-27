@@ -63,6 +63,11 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-white py-4 px-2 sm:py-6 sm:px-4">
       <div className="max-w-lg mx-auto">
+        {/* 앱 선택으로 돌아가기 */}
+        <Link href="/" className="inline-block mb-2 text-pink-400 hover:text-pink-600 text-sm px-2">
+          ← 앱 선택
+        </Link>
+
         {/* 상단 목표 안내 */}
         {remaining != null && (
           <div className="flex items-center gap-2 mb-4 px-2">
