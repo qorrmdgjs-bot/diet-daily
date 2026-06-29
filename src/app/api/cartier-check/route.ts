@@ -79,32 +79,22 @@ export async function GET(request: NextRequest) {
   }
 
   // 까르띠에 페이지 fetch + 재고 판정
-  let httpStatus: number | null = null;
+  // 까르띠에는 데이터센터 IP(Vercel)를 Akamai 봇 차단(403)으로 막으므로,
+  // 무료 Jina Reader 프록시(r.jina.ai)를 경유해 원본 HTML을 받아온다.
+  const { html, httpStatus, fetchError } = await fetchCartierHtml();
   let detect = { status: 'unknown' as const, inStock: false, marker: 'fetch 실패' } as ReturnType<
     typeof detectStock
   >;
-  try {
-    const res = await fetch(CARTIER_PRODUCT.url, {
-      headers: CARTIER_FETCH_HEADERS,
-      redirect: 'follow',
-      cache: 'no-store',
-    });
-    httpStatus = res.status;
-    if (res.ok) {
-      detect = detectStock(await res.text());
-    } else {
-      detect = {
-        status: 'unknown',
-        inStock: false,
-        marker: `HTTP ${res.status}${res.status === 403 ? ' (봇 차단 의심)' : ''}`,
-      };
-    }
-  } catch (e) {
+  if (html) {
+    detect = detectStock(html);
+  } else if (httpStatus && httpStatus !== 200) {
     detect = {
       status: 'unknown',
       inStock: false,
-      marker: e instanceof Error ? `fetch 오류: ${e.message}` : 'fetch 오류',
+      marker: `HTTP ${httpStatus}${httpStatus === 403 ? ' (봇 차단 의심)' : ''}`,
     };
+  } else {
+    detect = { status: 'unknown', inStock: false, marker: fetchError ?? 'fetch 오류' };
   }
 
   // 점검 결과 저장
@@ -170,4 +160,49 @@ function toPayload(row: CheckRow | null) {
     marker: row.marker,
     httpStatus: row.http_status,
   };
+}
+
+// 원본 HTML을 가져온다.
+// 1차: Jina Reader 프록시(r.jina.ai) — 데이터센터 IP 차단을 우회 (무료, JINA_API_KEY 있으면 사용)
+// 2차: 직접 fetch — 가정용 IP(로컬/잔여 환경)에서 동작. Vercel에선 보통 403.
+async function fetchCartierHtml(): Promise<{
+  html: string | null;
+  httpStatus: number | null;
+  fetchError: string | null;
+}> {
+  // 1차: Jina Reader
+  try {
+    const jinaHeaders: Record<string, string> = {
+      'X-Return-Format': 'html',
+      'X-No-Cache': 'true', // 항상 최신 상태 (재입고 즉시 감지)
+    };
+    if (process.env.JINA_API_KEY) {
+      jinaHeaders['Authorization'] = `Bearer ${process.env.JINA_API_KEY}`;
+    }
+    const res = await fetch(`https://r.jina.ai/${CARTIER_PRODUCT.url}`, {
+      headers: jinaHeaders,
+      cache: 'no-store',
+      signal: AbortSignal.timeout(25_000),
+    });
+    if (res.ok) {
+      const html = await res.text();
+      if (html && html.length > 2000) return { html, httpStatus: 200, fetchError: null };
+    }
+  } catch {
+    // 2차 시도로 진행
+  }
+
+  // 2차: 직접 fetch (가정용 IP에서만 통과)
+  try {
+    const res = await fetch(CARTIER_PRODUCT.url, {
+      headers: CARTIER_FETCH_HEADERS,
+      redirect: 'follow',
+      cache: 'no-store',
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (res.ok) return { html: await res.text(), httpStatus: 200, fetchError: null };
+    return { html: null, httpStatus: res.status, fetchError: null };
+  } catch (e) {
+    return { html: null, httpStatus: null, fetchError: e instanceof Error ? `fetch 오류: ${e.message}` : 'fetch 오류' };
+  }
 }
